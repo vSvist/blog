@@ -5,4 +5,32 @@
     <h2>{{ post.title }}</h2>
     <p>{{ post.body }}</p>
 </div>
+
+<p style="margin-left: 16px;"><a href="{% url 'post_edit' post.pk %}" style="color: red;
+    text-decoration: none;">&#128394; Edit Blog Post</a></p>
+<p style="margin-left: 16px;"><a href="{% url 'post_delete' post.pk %}" style="color: red;
+    text-decoration: none;">&#10006; Delete Blog Post</a></p>
+
+<h3 style="margin-left: 16px;">Add a new comment:</h3>
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button style="border: none;
+    padding: 8px 24px;
+    text-decoration: none;
+    color: #F3F3F3;
+    background-color: #007007;">Add Comment</button>
+</form>
+
+<hr style="margin: 0px;">
+<h3 style="margin-left: 16px;">Comments</h3>
+{% if post.comment_set.all.count != 0 %}
+{% for comment in post.comment_set.all %}
+<h5 style="margin-left: 16px; margin-bottom: 4px;">{{ comment.author }}</h5>
+<p style="margin-left: 16px; margin-top: 0px;">&emsp;{{ comment }}</p>
+{% endfor %}
+{% else %}
+<p style="margin-left: 16px;">Add a comment above</p>
+{% endif %}
+<hr style="margin: 0px;">
+
 {% endblock content %}

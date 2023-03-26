@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 style="padding-left: 16px;">New post</h1>
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" style="border: none;
+    padding: 8px 24px;
+    text-decoration: none;
+    color: #F3F3F3;
+    background-color: #007007;">
+</form>
+{% endblock content %}

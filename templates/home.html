@@ -4,7 +4,29 @@
 {% for post in post_list %}
 <div class="post-entry">
     <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
-    <p>{{ post.body }}</p>
+    <p style="margin-bottom: 8px;">{{ post.body }}</p>
+    <p>&#128172; {{ post.comment_set.all.count }}</p>
 </div>
 {% endfor %}
+{% if page_obj.has_other_pages %}
+
+<nav>
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">&#11013; Previous page</a>
+    {%endif%}
+    <br>
+    {% for p in paginator.page_range %}
+    {% if page_obj.number == p %}
+    <a>{{ p }}</a>
+    {% else %}
+    <a href="?page={{ p }}" style="color: rgba(5, 44, 8, 0.5);">{{ p }}</a>
+    {%endif%}
+    {% endfor %}
+    <br>
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">&#10145; Next page</a>
+    {%endif%}
+</nav>
+
+{% endif %}
 {% endblock content %}

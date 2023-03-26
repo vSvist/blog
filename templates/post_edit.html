@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 style="margin-left: 16px;">Edit post</h1>
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update" style="border: none;
+    padding: 8px 24px;
+    text-decoration: none;
+    color: #F3F3F3;
+    background-color: #007007;">
+</form>
+{% endblock content %}
