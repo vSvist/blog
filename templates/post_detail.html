@@ -25,8 +25,25 @@
 <h3 style="margin-left: 16px;">Comments</h3>
 {% if post.comment_set.all.count != 0 %}
 {% for comment in post.comment_set.all %}
-<h5 style="margin-left: 16px; margin-bottom: 4px;">{{ comment.author }}</h5>
+<h5 style="margin-left: 16px; margin-bottom: 4px">{{ comment.author }}</h5>
 <p style="margin-left: 16px; margin-top: 0px;">&emsp;{{ comment }}</p>
+<p style="margin-left: 16px; float:left">{{ comment.total_likes }}</p>
+<form action="{% url 'like_post' post.pk %}" method="POST" style="float:left">
+    {% csrf_token %}
+    <button type="submit" name="comment_pk" value="{{comment.pk}}" class='btn btn-primary btn-sm'
+        style="width: 64px; height: 64px; 
+    background-size: 64px;
+    background-image: url(https://sun9-68.userapi.com/impg/7YoUzRjbe3r-tq2LGdxgjwhoxNJmO3ZhbOZjOQ/1qs4msMKHTs.jpg?size=726x703&quality=96&sign=af7a36fdb2dee1e2383650355d000be2&type=album)">
+    </button>
+</form>
+<form action="{% url 'dislike_post' post.pk %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" name="comment_pk" value="{{comment.pk}}" class='btn btn-primary btn-sm'
+        style="width: 64px; height: 64px; 
+    background-size: 64px;
+    background-image: url(https://sun9-21.userapi.com/impg/A7ydXtifL_keB9iVZsJCsKY2BB_YQXPL-2cx3w/UJ41lUMFIRc.jpg?size=200x200&quality=96&sign=2590c8e42ce20df4f6d8c7aaae852642&type=album)">
+    </button>
+</form>
 {% endfor %}
 {% else %}
 <p style="margin-left: 16px;">Add a comment above</p>

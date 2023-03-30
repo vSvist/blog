@@ -2,9 +2,35 @@ from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
 from django.urls import reverse_lazy, reverse
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
 
-from .models import Post
+from .models import Post, Comment
 from .forms import CommentForm
+
+
+def LikeView(request, pk):
+    comment = get_object_or_404(Comment, id=request.POST.get("comment_pk"))
+    if comment.likes.filter(id=request.user.id).exists():
+        comment.likes.remove(request.user)
+    else:
+        comment.likes.add(request.user)
+        if comment.dislikes.filter(id=request.user.id).exists():
+            comment.dislikes.remove(request.user)
+
+    return HttpResponseRedirect(reverse("post_detail", kwargs={"pk": pk}))
+
+
+def DisikeView(request, pk):
+    comment = get_object_or_404(Comment, id=request.POST.get("comment_pk"))
+    if comment.dislikes.filter(id=request.user.id).exists():
+        comment.dislikes.remove(request.user)
+    else:
+        comment.dislikes.add(request.user)
+        if comment.likes.filter(id=request.user.id).exists():
+            comment.likes.remove(request.user)
+
+    return HttpResponseRedirect(reverse("post_detail", kwargs={"pk": pk}))
 
 
 class BlogListView(ListView):
@@ -46,7 +72,7 @@ class BlogDeleteView(DeleteView):
     success_url = reverse_lazy("home")
 
 
-class CommentGet(DetailView):  # new
+class CommentGet(DetailView):
     model = Post
     template_name = "post_detail.html"
 
